@@ -1,0 +1,55 @@
+name: Build portfolio video assets
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/portfolio-video-assets.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-videos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install video tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          python -m pip install --upgrade pip gdown
+
+      - name: Download and optimize hero
+        run: |
+          mkdir -p assets/video /tmp/audaz
+          gdown --id 14SEmcUaEBu9HkZJVPzEYy_-ccWX0_GvF -O /tmp/audaz/tw-cross.mp4
+          ffmpeg -y -ss 0 -t 12 -i /tmp/audaz/tw-cross.mp4 -an -vf 'scale=-2:720' -c:v libx264 -preset medium -crf 29 -movflags +faststart -pix_fmt yuv420p assets/video/tw-cross-hero.mp4
+
+      - name: Download and optimize project clips
+        run: |
+          gdown --id 1e4wCgsym5buvmg1K6XMRBiVK_I2cJGp3 -O /tmp/audaz/sequence04.mp4
+          ffmpeg -y -ss 0 -t 9 -i /tmp/audaz/sequence04.mp4 -an -vf 'scale=-2:480' -c:v libx264 -preset medium -crf 30 -movflags +faststart -pix_fmt yuv420p assets/video/sequence-04.mp4
+
+          gdown --id 1wMYKB2jo9AW4hHzz4H9Pc-GCaZCh5fLn -O /tmp/audaz/petpatty.mp4
+          ffmpeg -y -ss 0 -t 9 -i /tmp/audaz/petpatty.mp4 -an -vf 'scale=-2:480' -c:v libx264 -preset medium -crf 30 -movflags +faststart -pix_fmt yuv420p assets/video/pet-patty.mp4
+
+          gdown --id 1leN7BC7o2995beXqG2BxY9nXOmaR37Ud -O /tmp/audaz/taketherisk.mp4
+          ffmpeg -y -ss 0 -t 9 -i /tmp/audaz/taketherisk.mp4 -an -vf 'scale=-2:480' -c:v libx264 -preset medium -crf 30 -movflags +faststart -pix_fmt yuv420p assets/video/take-the-risk.mp4
+
+          gdown --id 1GOTpnVqNF5bX4m4xpLxUhKaA9pKcBuvb -O /tmp/audaz/pilula02.mp4
+          ffmpeg -y -ss 0 -t 9 -i /tmp/audaz/pilula02.mp4 -an -vf 'scale=-2:480' -c:v libx264 -preset medium -crf 30 -movflags +faststart -pix_fmt yuv420p assets/video/pilula-02.mp4
+
+      - name: Commit optimized assets
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin main
+          git add assets/video
+          git diff --cached --quiet && exit 0
+          git commit -m 'Add optimized portfolio video assets'
+          git push origin main
