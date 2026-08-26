@@ -27,21 +27,21 @@ jobs:
       - name: Download and optimize hero
         run: |
           mkdir -p assets/video /tmp/audaz
-          gdown --id 14SEmcUaEBu9HkZJVPzEYy_-ccWX0_GvF -O /tmp/audaz/tw-cross.mp4
+          gdown 14SEmcUaEBu9HkZJVPzEYy_-ccWX0_GvF -O /tmp/audaz/tw-cross.mp4
           ffmpeg -y -ss 0 -t 12 -i /tmp/audaz/tw-cross.mp4 -an -vf 'scale=-2:720' -c:v libx264 -preset medium -crf 29 -movflags +faststart -pix_fmt yuv420p assets/video/tw-cross-hero.mp4
 
       - name: Download and optimize project clips
         run: |
-          gdown --id 1e4wCgsym5buvmg1K6XMRBiVK_I2cJGp3 -O /tmp/audaz/sequence04.mp4
+          gdown 1e4wCgsym5buvmg1K6XMRBiVK_I2cJGp3 -O /tmp/audaz/sequence04.mp4
           ffmpeg -y -ss 0 -t 9 -i /tmp/audaz/sequence04.mp4 -an -vf 'scale=-2:480' -c:v libx264 -preset medium -crf 30 -movflags +faststart -pix_fmt yuv420p assets/video/sequence-04.mp4
 
-          gdown --id 1wMYKB2jo9AW4hHzz4H9Pc-GCaZCh5fLn -O /tmp/audaz/petpatty.mp4
+          gdown 1wMYKB2jo9AW4hHzz4H9Pc-GCaZCh5fLn -O /tmp/audaz/petpatty.mp4
           ffmpeg -y -ss 0 -t 9 -i /tmp/audaz/petpatty.mp4 -an -vf 'scale=-2:480' -c:v libx264 -preset medium -crf 30 -movflags +faststart -pix_fmt yuv420p assets/video/pet-patty.mp4
 
-          gdown --id 1leN7BC7o2995beXqG2BxY9nXOmaR37Ud -O /tmp/audaz/taketherisk.mp4
+          gdown 1leN7BC7o2995beXqG2BxY9nXOmaR37Ud -O /tmp/audaz/taketherisk.mp4
           ffmpeg -y -ss 0 -t 9 -i /tmp/audaz/taketherisk.mp4 -an -vf 'scale=-2:480' -c:v libx264 -preset medium -crf 30 -movflags +faststart -pix_fmt yuv420p assets/video/take-the-risk.mp4
 
-          gdown --id 1GOTpnVqNF5bX4m4xpLxUhKaA9pKcBuvb -O /tmp/audaz/pilula02.mp4
+          gdown 1GOTpnVqNF5bX4m4xpLxUhKaA9pKcBuvb -O /tmp/audaz/pilula02.mp4
           ffmpeg -y -ss 0 -t 9 -i /tmp/audaz/pilula02.mp4 -an -vf 'scale=-2:480' -c:v libx264 -preset medium -crf 30 -movflags +faststart -pix_fmt yuv420p assets/video/pilula-02.mp4
 
       - name: Commit optimized assets
